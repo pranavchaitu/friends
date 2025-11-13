@@ -1,28 +1,27 @@
 import db from "./prisma";
 import { CreateUserPayload } from "./types";
 
-export async function findUser(email : string) : Promise<string|null> {
+export async function findUser(email : string) {
     const user = await db.user.findFirst({
         where : {
           email
         },
-        select : {
-          id : true
-        }
     })
-    return user?.id || null
+    const isOnboarded : boolean = !!(user?.images.length && user.about && user.gender && user.hobbies.length)
+    return {
+        id : user?.id,
+        isOnboarded
+    }
 }
 
 export async function createUser({
     name,
     email,
-    profileUrl
 } : CreateUserPayload) : Promise<string> {
     const newUser = await db.user.create({
         data : {
             name,
             email,
-            profileUrl
         },
         select : {
             id : true

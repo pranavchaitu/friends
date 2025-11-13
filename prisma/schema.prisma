@@ -14,10 +14,18 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum Gender {
+  male
+  female
+}
+
 model User {
   id String @id @default(uuid())
   name String
   email String @unique
-  profileUrl String
+  about String?
+  gender Gender?
+  hobbies String[]
+  images String[]
 }
 

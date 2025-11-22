@@ -13,7 +13,7 @@ export default ({ about, setAbout } : {
 
     return <div className="grid w-full gap-3">
         <h2 className="text-lg font-semibold text-foreground">About</h2>
-        <Textarea onChange={(e) => handleAboutInput(e)} placeholder="Write about yourself in short" id="about-text" />
+        <Textarea onChange={(e) => handleAboutInput(e)} placeholder="Write about yourself in short" id="about-text" value={about}></Textarea>
         <p className="font-mono text-sm text-gray-500">{about.length}/100 characters</p>
     </div>
 }

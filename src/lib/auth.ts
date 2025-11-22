@@ -1,7 +1,6 @@
 import NextAuth, { DefaultSession } from "next-auth"
 import MicrosoftEntraID from "next-auth/providers/microsoft-entra-id"
 import { createUser, findUser } from "./actions"   
-import { Session } from "inspector/promises"
 
 declare module "next-auth" {
   interface Session {
@@ -36,9 +35,6 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       session.user.id = token.id
       session.user.isOnboarded = token.isOnboarded
       return session
-    },
-    authorized: async ({ auth }) => {
-      return !!auth
     },
   },
 })

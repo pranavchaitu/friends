@@ -3,7 +3,7 @@ import { NextAuthRequest, Session } from "next-auth"
 import { NextResponse } from "next/server"
 
 export default auth((req : NextAuthRequest) => {
-  const session = req.auth
+  const session = req.auth!
   if(!session) {
     // user is not authenticated
     return NextResponse.redirect(new URL("/api/auth/signin",req.url))

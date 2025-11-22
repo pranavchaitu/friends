@@ -29,3 +29,26 @@ export async function createUser({
     })
     return newUser.id
 }
+
+export async function onBoardUser({
+    userId,
+    imageUrls,
+    about,
+    interests
+} : {
+    userId : string,
+    imageUrls : string[],
+    about : string,
+    interests : string[]
+}) {
+    await db.user.update({
+        data : {
+            about,
+            hobbies : interests,
+            images : imageUrls
+        },
+        where : {
+            id : userId
+        }
+    })
+}

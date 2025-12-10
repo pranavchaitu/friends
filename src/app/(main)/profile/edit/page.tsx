@@ -5,15 +5,18 @@ import AboutInput from "@/components/profile/about-input"
 import { useEffect, useState } from "react"
 import ImageInput from "@/components/profile/image-input"
 import { Button } from "@/components/ui/button"
+import { onBoardUser } from "@/lib/actions"
+import { useSession } from "next-auth/react"
+import { toast } from "sonner"
 
 export default () => {
     const [about, setAbout] = useState("");
     const [selectedInterests,setSelectedInterests] = useState<string[]>([])
     const [step, setStep] = useState(0)
-    
+
     useEffect(() => {
         setAbout(localStorage.getItem("profile/about") || "")
-        setSelectedInterests(JSON.parse(localStorage.getItem("profile/interests")!))
+        setSelectedInterests(JSON.parse(localStorage.getItem("profile/interests")!) || [])
     },[])
 
     useEffect(() => {
@@ -25,10 +28,11 @@ export default () => {
         if (about.trim().length && selectedInterests.length) {
             setStep(1)
         } else {
-            return alert("fill the details dude")
+            return toast.error("fill the details dude!")
         }
     }
 
+    const { data } = useSession()
     return <div className="flex flex-col items-center">
         <div className="font-bold text-3xl py-2">Complete your profile</div>
         <div className="text-gray-500">Let others get to know the real you</div>
@@ -47,7 +51,7 @@ export default () => {
                 </div>
             </>
             : 
-                <ImageInput />
+                <ImageInput about={about} interests={selectedInterests}/>
             }
         </div>
     </div>

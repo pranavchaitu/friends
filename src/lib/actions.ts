@@ -1,3 +1,5 @@
+"use server"
+
 import db from "./prisma";
 import { CreateUserPayload } from "./types";
 
@@ -7,7 +9,8 @@ export async function findUser(email : string) {
           email
         },
     })
-    const isOnboarded : boolean = !!(user?.images.length && user.about && user.gender && user.hobbies.length)
+    // const isOnboarded : boolean = !!(user?.images.length && user.about && user.gender && user.hobbies.length)
+    const isOnboarded : boolean = !!(user?.images.length && user.about && user.hobbies.length)
     return {
         id : user?.id,
         isOnboarded

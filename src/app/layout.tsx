@@ -9,6 +9,7 @@ import "@uploadthing/react/styles.css";
 import { NextSSRPlugin } from "@uploadthing/react/next-ssr-plugin";
 import { extractRouterConfig } from "uploadthing/server";
 import { ourFileRouter } from "./api/uploadthing/core";
+import { Toaster } from "@/components/ui/sonner";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -41,8 +42,8 @@ export default function RootLayout({
            * from the router to prevent additional information from being
            * leaked to the client. The data passed to the client is the same
            * as if you were to fetch `/api/uploadthing` directly.
-           */
-          routerConfig={extractRouterConfig(ourFileRouter)}
+          */
+         routerConfig={extractRouterConfig(ourFileRouter)}
         />
         <ThemeProvider
           attribute="class"
@@ -51,6 +52,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <SessionProvider>
+            <Toaster />
             <Topbar />
             <MaxWidthWrapper>
               {children}

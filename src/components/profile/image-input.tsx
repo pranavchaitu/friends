@@ -5,13 +5,17 @@ import { useRouter } from "next/navigation";
 import { UploadDropzone } from "@/utils/uploadthing";
 import { onBoardUser } from "@/lib/actions";
 import { useSession } from "next-auth/react";
+import { toast } from "sonner";
 
-export default function() {
+export default function({
+  about,
+  interests
+} : {
+  about : string,
+  interests : string[]
+}) {
   const router = useRouter()
-  const { data } = useSession()
-  const about = localStorage.getItem("profile/about")!
-  const interests = JSON.parse(localStorage.getItem("profile/interests")!)
-
+  const { update } = useSession();
   return (
     <div className="flex justify-center w-full">
         <UploadDropzone
@@ -19,21 +23,23 @@ export default function() {
           endpoint="imageUploader"
           config={{ cn : twMerge }}
           onClientUploadComplete={async (res) => {
-            console.log(res)
-            // await onBoardUser({
-            //   imageUrls : [res[0].ufsUrl,res[1].ufsUrl],
-            //   about,
-            //   interests,
-            //   userId : data?.user.id!
-            // })
-            alert("Upload Completed");
-            // router.push('/home')
+            localStorage.removeItem('profile/about')
+            localStorage.removeItem('profile/interests')
+            await onBoardUser({
+              imageUrls : [res[0].ufsUrl,res[1].ufsUrl],
+              about,
+              interests,
+              userId : res[0].serverData.uploadedBy!
+            })
+            await update();
+            toast.success("Upload Completed!");
+            router.push('/explore')
           }}
           onUploadError={(error: Error) => {
-            alert(error.message)
-            // toast.error('error uploading photo',{
-            //   description : "you can try it again"
-            // });
+            console.log(error.message);
+            toast.error('Error uploading photo!',{
+              description : "you can try it again"
+            });
           }}
         />
     </div>

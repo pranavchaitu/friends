@@ -27,14 +27,8 @@ export const ourFileRouter = {
       // Whatever is returned here is accessible in onUploadComplete as `metadata`
       return { userId: session.user.id };
     })
-    .onUploadComplete(async ({ metadata, file }) => {
-      // This code RUNS ON YOUR SERVER after upload
-
-
-      console.log("Upload complete for userId:", metadata.userId);
-
-      console.log("file url", file.ufsUrl);
-      
+    .onUploadComplete(async ({ metadata }) => {
+      // This code RUNS ON YOUR SERVER after upload      
       // !!! Whatever is returned here is sent to the clientside `onClientUploadComplete` callback
       return { 
         uploadedBy: metadata.userId,

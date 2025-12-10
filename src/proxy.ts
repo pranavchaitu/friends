@@ -12,6 +12,9 @@ export default auth((req : NextAuthRequest) => {
   if(!session.user?.isOnboarded && pathName !== "/profile/edit") {
     return NextResponse.redirect(new URL("/profile/edit",req.url))
   }
+  if(session.user?.isOnboarded && pathName == "/profile/edit") {
+    return NextResponse.redirect(new URL("/explore",req.url))
+  }
   return NextResponse.next()
 })
 

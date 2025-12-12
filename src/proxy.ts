@@ -3,16 +3,16 @@ import { NextAuthRequest, Session } from "next-auth"
 import { NextResponse } from "next/server"
 
 export default auth((req : NextAuthRequest) => {
+  const pathName = req.nextUrl.pathname
   const session = req.auth!
   if(!session) {
     // user is not authenticated
     return NextResponse.redirect(new URL("/api/auth/signin",req.url))
   }
-  const pathName = req.nextUrl.pathname
-  if(!session.user?.isOnboarded && pathName !== "/profile/edit") {
-    return NextResponse.redirect(new URL("/profile/edit",req.url))
+  if(!session.user?.isOnboarded && pathName !== "/onboarding") {
+    return NextResponse.redirect(new URL("/onboarding",req.url))
   }
-  if(session.user?.isOnboarded && pathName == "/profile/edit") {
+  if(session.user?.isOnboarded && pathName == "/onboarding") {
     return NextResponse.redirect(new URL("/explore",req.url))
   }
   return NextResponse.next()

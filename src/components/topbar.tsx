@@ -9,7 +9,7 @@ import Link from "next/link"
 export default () => {
     const { status } = useSession()
     return <>
-        <div className="fixed top-4 left-4 right-4 md:left-10 md:right-10 lg:left-60 lg:right-60 rounded-full p-2 md:px-4 backdrop-blur-2xl">
+        <div className="z-30 bg-white dark:bg-black border fixed top-4 left-4 right-4 md:left-10 md:right-10 lg:left-60 lg:right-60 rounded-full p-2 md:px-4">
             <div className="flex justify-between items-center">
                 <Link href={"/"}>friends.</Link>
                 <div className="flex items-center gap-2">

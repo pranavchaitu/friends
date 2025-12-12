@@ -7,9 +7,9 @@ export default function({
   children: ReactNode;
 }>) {
     return <div className="flex">
-        <div>
+        <div className="">
             <Sidebar />
         </div>
-        <div>{children}</div>
+        <div className="w-full">{children}</div>
     </div>
 }

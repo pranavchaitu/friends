@@ -27,5 +27,6 @@ model User {
   gender Gender?
   hobbies String[]
   images String[]
+  sentLikes User[] @relation("LikeRelation")
+  receivedLikes User[] @relation("LikeRelation")
 }
-

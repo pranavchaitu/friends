@@ -1,6 +1,6 @@
 "use client"
 
-import { getFriendsForFeed, sendLike } from "@/lib/actions"
+import { getFriendsForFeed, sendDislike, sendLike } from "@/lib/actions"
 import { UserFeed } from "@/lib/types"
 import { ThumbsDown, ThumbsUp } from "lucide-react"
 import Image from "next/image"
@@ -18,12 +18,20 @@ export default function() {
             setFeed(friends)
             setLoading(false)
         })()
+        // we can do cache for this - storing liked ids for a current session.
+        // TRIAGE : making sure everytime a like happens the feed changes accordingly(exlusing liked ones without reload). 
     }, [])
 
     if(loading) {
-        return <>
+        return <div className="flex items-center justify-center h-full w-full">
             loading...
-        </>
+        </div>
+    }
+
+    if(!feed?.length) {
+        return <div className="flex items-center justify-center h-full w-full">
+            visited all friends!
+        </div>
     }
 
     const user = feed![curIndex]
@@ -36,13 +44,16 @@ export default function() {
         }
     }
 
-    function handleLike() {
-        sendLike(user.id)
+    async function handleLike() {
+        await sendLike(user.id)
+        changeIndex()
         toast.success(`Liked ${user.name}`)
     }
 
-    function handleDislike() {
-        // TRIAGE
+    async function handleDislike() {
+        await sendDislike(user.id)
+        changeIndex()
+        toast.success(`Disliked ${user.name}`)
     }
 
     return <div className="flex justify-evenly w-full">
@@ -55,7 +66,7 @@ export default function() {
                 {user.about}
             </p>
             <Image src={user.images[1]} alt="img2" width={300} height={300}/>
-            <div className="flex gap-2 items-center justify-evenly w-full" onClick={changeIndex}>
+            <div className="flex gap-2 items-center justify-evenly w-full">
                 <ThumbsUp onClick={handleLike}/>
                 <ThumbsDown onClick={handleDislike}/>
             </div>

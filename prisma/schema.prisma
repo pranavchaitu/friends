@@ -29,4 +29,6 @@ model User {
   images String[]
   sentLikes User[] @relation("LikeRelation")
   receivedLikes User[] @relation("LikeRelation")
+  sentDislikes User[] @relation("DislikeRelation")
+  receivedDislikes User[] @relation("DislikeRelation")
 }

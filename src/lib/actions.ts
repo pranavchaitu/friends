@@ -63,9 +63,23 @@ export async function getFriendsForFeed() : Promise<UserFeed[]> {
     const userId = session?.user.id
     const friends = await db.user.findMany({
         where : {
-            id : {
-                not : userId
-            }
+            AND : [{
+                id : {
+                    not : userId
+                }
+            }, {
+                receivedLikes : {
+                    none : {
+                        id : userId
+                    }
+                }
+            }, {
+                receivedDislikes : {
+                    none : {
+                        id : userId
+                    }
+                }
+            }]
         },
         select : {
             id : true,
@@ -94,4 +108,44 @@ export async function sendLike(to : string) {
             }
         }
     })
+}
+
+export async function sendDislike(to : string) {
+    const session = await auth()
+    const userId = session?.user.id
+    await db.user.update({
+        where : {
+            id : userId
+        },
+        data : {
+            sentDislikes : {
+                connect : {
+                    id : to
+                }
+            }
+        }
+    })
+}
+
+export async function whoLikedUs() : Promise<UserFeed[]> {
+    const session = await auth()
+    const userId = session?.user.id
+    const data = await db.user.findFirst({
+        where : {
+            id : userId
+        },
+        select : {
+            receivedLikes : {
+                select : {
+                    id : true,
+                    name : true,
+                    about : true,
+                    gender : true,
+                    hobbies : true,
+                    images : true
+                }
+            }
+        }
+    })
+    return data?.receivedLikes || []
 }

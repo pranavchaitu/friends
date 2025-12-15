@@ -2,10 +2,10 @@
 
 import { Heart, MessageCircleMore, UserRound, Users } from "lucide-react";
 import Link from "next/link";
-import { ReactNode, useState } from "react";
+import { usePathname } from "next/navigation";
+import { ReactNode } from "react";
 
 export default function() {
-  const [selected, setSelected] = useState("explore")
   const content = [{
     title : "explore",
     icon : <Users size={20}/>
@@ -19,10 +19,12 @@ export default function() {
     title : "profile",
     icon : <UserRound size={20}/>
   }]
+
+
   return <div className="flex justify-center w-52 mt-10">
     <ul className="flex flex-col justify-between gap-4 h-80">
       {content.map(({ title, icon }) => (
-        <Link key={title} href={`/${title}`} onClick={() => setSelected(title)}>
+        <Link key={title} href={`/${title}`}>
           <SelectedBox title={title}>
             {icon}
             <li>
@@ -38,7 +40,8 @@ export default function() {
     children : ReactNode,
     title : string
   }) {
-    return <div className={`flex items-center gap-4 px-4 py-2 rounded-full ${selected == title && "border"}`}>
+    const pathName = usePathname()
+    return <div className={`flex items-center gap-4 px-4 py-2 rounded-full ${pathName.slice(1) == title && "border"}`}>
       {children}
     </div>
   }

@@ -1,7 +1,7 @@
 next features :
-- add the screens [explore, likes, chat, profile]
-- explore screen features [show full profiles, swipe (left, right)]
 - show who likes on /likes screen
+- enable profile editing
+- chat with matches (mutual liked ones)
 
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 

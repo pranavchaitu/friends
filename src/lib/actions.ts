@@ -149,3 +149,14 @@ export async function whoLikedUs() : Promise<UserFeed[]> {
     })
     return data?.receivedLikes || []
 }
+
+export async function getUserProfile() {
+    const session = await auth()
+    const userId = session?.user.id
+    const user = await db.user.findFirst({
+        where : {
+            id : userId
+        }
+    })
+    return user
+}
